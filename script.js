@@ -1,50 +1,78 @@
 let fields = [
-    null,
-    'circle',
-    'circle',
-    'circle',
-    null,
-    null,
-    'cross',
-    'cross',
-    null,
+  null, null, null,
+  null, null, null,
+  null, null, null
 ];
 
+let currentPlayer = 'circle'; // 'circle' oder 'cross'
+
 function init() {
-    render();
+  render();
 }
 
+function renderCell(index) {
+  const cell = document.querySelector(`[data-index="${index}"]`);
 
-function render() {
-    const contentDiv = document.getElementById('Content');
-    const table = document.createElement('table');
+  if (cell) {
+    cell.innerHTML = ''; // Löschen Sie den Inhalt des Zellelements
 
-    for (let i = 0; i < 3; i++) {
-        const row = table.insertRow(i);
+    const symbolDiv = document.createElement('div');
+    symbolDiv.className = 'symbol';
 
-        for (let j = 0; j < 3; j++) {
-            const cell = row.insertCell(j);
-            const index = i * 3 + j;
-
-            // Erstellen Sie ein <div> Element für das Symbol
-            const symbolDiv = document.createElement('div');
-            symbolDiv.className = 'symbol';
-
-            if (fields[index] === 'circle') {
-                // Fügen Sie das Kreis-Symbol hinzu
-                symbolDiv.innerHTML = generateCircleSVG();
-            } else if (fields[index] === 'cross') {
-                // Fügen Sie das Kreuz-Symbol hinzu
-                symbolDiv.innerHTML = generateCrossSVG();
-            }
-
-            cell.appendChild(symbolDiv);
-        }
+    if (fields[index]) {
+      // Wenn das Feld nicht null ist, fügen Sie das entsprechende Symbol hinzu
+      symbolDiv.innerHTML = fields[index] === 'circle' ? generateCircleSVG() : generateCrossSVG();
+    } else {
+      // Wenn das Feld null ist, fügen Sie das onclick-Attribut hinzu
+      cell.setAttribute('onclick', `handleClick(${index})`);
     }
 
-    contentDiv.innerHTML = '';
-    contentDiv.appendChild(table);
+    cell.appendChild(symbolDiv);
+  }
 }
+
+function handleClick(index) {
+  if (!fields[index]) {
+    // Wenn das Feld leer ist
+    fields[index] = currentPlayer;
+    currentPlayer = currentPlayer === 'circle' ? 'cross' : 'circle';
+
+    // Entfernen Sie das onclick-Attribut, um weitere Klicks zu verhindern
+    const cell = document.querySelector(`[data-index="${index}"]`);
+    if (cell) {
+      cell.removeAttribute('onclick');
+    }
+
+    // Aktualisieren Sie nur das angeklickte Feld
+    renderCell(index);
+  }
+}
+
+function render() {
+  const contentDiv = document.getElementById('Content');
+  const table = document.createElement('table');
+
+  for (let i = 0; i < 3; i++) {
+    const row = table.insertRow(i);
+
+    for (let j = 0; j < 3; j++) {
+      const index = i * 3 + j;
+
+      // Erstellen Sie ein <td> Element mit einem data-index Attribut
+      const cell = document.createElement('td');
+      cell.setAttribute('data-index', index);
+
+      // Fügen Sie das onclick-Attribut hinzu
+      cell.setAttribute('onclick', `handleClick(${index})`);
+
+      row.appendChild(cell);
+    }
+  }
+
+  contentDiv.innerHTML = '';
+  contentDiv.appendChild(table);
+}
+
 
 function generateCircleSVG() {
     const svgCode = `
