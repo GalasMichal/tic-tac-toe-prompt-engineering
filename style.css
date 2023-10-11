@@ -12,10 +12,24 @@ h1 {
 }
 
 #Content {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 300px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+#Lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Verhindert, dass das Div Klicks abfängt */
 }
 
 table {
@@ -68,4 +82,42 @@ table tr:last-child td {
 
 table tr td:last-child {
   border-right: 0 !important;
+}
+
+.winning-line {
+  position: absolute;
+  width: 100%;
+  height: 10px; /* Die Höhe der Linie anpassen */
+  background-color: white;
+  transform-origin: center;
+  
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #6835ac; /* Hintergrundfarbe des Buttons */
+  color: white; /* Schriftfarbe des Buttons */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #7b56ab; /* Hintergrundfarbe des Buttons im Hover-Zustand */
+}
+
+/* Zentrieren des Buttons */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
